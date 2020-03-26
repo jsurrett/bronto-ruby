@@ -97,6 +97,8 @@ module Bronto
       api_key = api_key || self.api_key
 
       resp = request(:read, { filter: filter.to_hash, page_number: page_number })
+      puts("\nBronto - Base #{plural_class_name}.find: #{resp}\n")
+      Rails.logger.warn("\nBronto - Base #{plural_class_name}.find: #{resp}\n")
 
       Array.wrap(resp[:return]).map { |hash| new(hash) }
     end
@@ -112,6 +114,8 @@ module Bronto
       api_key = objs.first.is_a?(String) ? objs.shift : self.api_key
 
       resp = request(:add, {plural_class_name => objs.map(&:to_hash)})
+      puts("\nBronto - Base #{plural_class_name}.create: #{resp}\n")
+      Rails.logger.warn("\nBronto - Base #{plural_class_name}.create: #{resp}\n")
 
       objs.each { |o| o.errors.clear }
 
@@ -134,6 +138,8 @@ module Bronto
       api_key = objs.first.is_a?(String) ? objs.shift : self.api_key
 
       resp = request(:update, {plural_class_name => objs.map(&:to_hash)})
+      puts("\nBronto - Base #{plural_class_name}.update: #{resp}\n")
+      Rails.logger.warn("\nBronto - Base #{plural_class_name}.update: #{resp}\n")
 
       objs.each { |o| o.errors.clear }
       objs
@@ -150,6 +156,8 @@ module Bronto
       api_key = objs.first.is_a?(String) ? objs.shift : self.api_key
 
       resp = request(:delete, {plural_class_name => objs.map { |o| { id: o.id }}})
+      puts("\nBronto - Base self.destroy response: #{resp}\n")
+      Rails.logger.warn("\nBronto - Base self.destroy response: #{resp}\n")
 
       Array.wrap(resp[:return][:results]).each_with_index do |result, i|
         if result[:is_error]
@@ -186,6 +194,8 @@ module Bronto
       _self = self
 
       resp = request(:read, { filter: { id: _self.id } })
+      puts("\nBronto - Base self.reload response: #{resp}\n")
+      Rails.logger.warn("\nBronto - Base self.reload response: #{resp}\n")
 
       resp[:return].each do |k, v|
         self.send("#{k}=", v) if self.respond_to? "#{k}="

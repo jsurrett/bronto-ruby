@@ -14,6 +14,8 @@ module Bronto
       body[:include_lists] = include_lists
 
       resp = request(:read, body)
+      puts("\nBronto - Contact self.find response: #{resp}\n")
+      Rails.logger.warn("\nBronto - Contact self.find response: #{resp}\n")
 
       Array.wrap(resp[:return]).map { |hash| new(hash) }
     end
@@ -23,6 +25,8 @@ module Bronto
       api_key = objs.first.is_a?(String) ? objs.shift : self.api_key
 
       resp = request(:add_or_update, {plural_class_name => objs.map(&:to_hash)})
+      puts("\nBronto - Contact self.save: #{resp}\n")
+      Rails.logger.warn("\nBronto - Contact self.save: #{resp}\n")
 
       objs.each { |o| o.errors.clear }
 

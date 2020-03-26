@@ -14,6 +14,8 @@ module Bronto
       api_key = api_key || self.api_key
 
       resp = request(:read, body)
+      puts("\nBronto - Delivery self.find response: #{resp}\n")
+      Rails.logger.warn("\nBronto - Delivery self.find response: #{resp}\n")
 
       Array.wrap(resp[:return]).map { |hash| new(hash) }
     end
